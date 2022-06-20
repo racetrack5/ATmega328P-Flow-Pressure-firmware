@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(void)
+int main()
 {
     init_lcd();
 
@@ -8,8 +8,7 @@ int main(void)
     
     while(1)
     {
-        /* Check each sensor and re-evalute
-         * analog inputs if required. */
+        /* Check each sensor and re-evalute analog inputs. */
         poll_adc();
 
         if (ADCSRA &= ~(1 << 6))

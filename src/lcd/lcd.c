@@ -36,9 +36,7 @@ void forward_bit_address(uint8_t *byte)
 
 void send_data_lcd(uint8_t byte)
 {
-    /* Send data (not commands) to the LCD. The LCD
-     * is operating in 4-bit mode (to conserve pins).
-     */
+    /* Send data (not commands) to the LCD (4-bit mode). */
     write_nibble(byte);
     
     PORTD |= (1 << 3);
@@ -47,9 +45,7 @@ void send_data_lcd(uint8_t byte)
     PORTD &= ~(1 << 5);
     _delay_us(200);
 
-    /* Shift LSBs rightward (send second lot of
-     * 4 bits (nibble).
-     */
+    /* Shift LSBs rightward (send second lot of 4 bits). */
     byte <<= 4;
 
     write_nibble(byte);
@@ -62,10 +58,7 @@ void send_data_lcd(uint8_t byte)
 
 void send_command_lcd(uint8_t byte)
 {
-    /* Send command to LCD. Looser timings compared to
-     * simply sending data, otherwise LCD we risk the
-     * LCD not initialising correctly (garbled text).
-     */
+    /* Send command to LCD. Looser timings for reliability. */
     write_nibble(byte);
 
     PORTD &= ~(1 << 3);

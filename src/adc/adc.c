@@ -9,10 +9,8 @@ void poll_adc()
 
 void init_adc()
 {
-    /* Set pin modes and init ADC. Reference
-     * voltage is AVCC (connected to 5V), and the
-     * ADC will operate in 10-bit mode with
-     * pre-scalar set to 128 (125K samples).
+    /* Set pin modes and init ADC. Reference voltage is AVCC (5V), 
+     * ADC operating in 10-bit mode with pre-scalar at 128 (125K).
      */
     DDRC = 0x00;
     PORTC = 0x00;
