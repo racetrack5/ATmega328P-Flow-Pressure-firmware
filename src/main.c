@@ -11,8 +11,8 @@ int main()
         /* Check each sensor and re-evalute analog inputs. */
         poll_adc();
 
-        if (ADCSRA &= ~(1 << 6))
-            ADCSRA |= (1 << 6);
+        if (ADCSRA &= ~(1 << ADSC))
+            ADCSRA |= (1 << ADSC);
                 
         /* Optional delay */
         _delay_ms(100);

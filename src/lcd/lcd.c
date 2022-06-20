@@ -4,24 +4,24 @@ static void write_nibble(uint8_t byte)
 {
     /* Test most significant 4-bits and set pins */
     if(byte & 0x10)
-        PORTB |= (1 << 0);
+        PORTB |= (1 << PORTB0);
     else
-        PORTB &= ~(1 << 0);
+        PORTB &= ~(1 << PORTB0);
 
     if(byte & 0x20)
-        PORTB |= (1 << 1);
+        PORTB |= (1 << PORTB1);
     else
-        PORTB &= ~(1 << 1);
+        PORTB &= ~(1 << PORTB1);
 
     if(byte & 0x40)
-        PORTB |= (1 << 2);
+        PORTB |= (1 << PORTB2);
     else
-        PORTB &= ~(1 << 2);
+        PORTB &= ~(1 << PORTB2);
 
     if(byte & 0x80)
-        PORTB |= (1 << 3);
+        PORTB |= (1 << PORTB3);
     else
-        PORTB &= ~(1 << 3);
+        PORTB &= ~(1 << PORTB3);
 }
 
 void forward_bit_address(uint8_t *byte)
@@ -39,10 +39,10 @@ void send_data_lcd(uint8_t byte)
     /* Send data (not commands) to the LCD (4-bit mode). */
     write_nibble(byte);
     
-    PORTD |= (1 << 3);
-    PORTD |= (1 << 5);
+    PORTD |= (1 << PORTD3);
+    PORTD |= (1 << PORTD5);
     _delay_us(1);
-    PORTD &= ~(1 << 5);
+    PORTD &= ~(1 << PORTD5);
     _delay_us(200);
 
     /* Shift LSBs rightward (send second lot of 4 bits). */
@@ -50,9 +50,9 @@ void send_data_lcd(uint8_t byte)
 
     write_nibble(byte);
     
-    PORTD |= (1 << 5);
+    PORTD |= (1 << PORTD5);
     _delay_us(1);
-    PORTD &= ~(1 << 5);
+    PORTD &= ~(1 << PORTD5);
     _delay_us(200);
 }
 
@@ -61,19 +61,19 @@ void send_command_lcd(uint8_t byte)
     /* Send command to LCD. Looser timings for reliability. */
     write_nibble(byte);
 
-    PORTD &= ~(1 << 3);
-    PORTD|=(1 << 5);  
+    PORTD &= ~(1 << PORTD3);
+    PORTD|=(1 << PORTD5);  
     _delay_us(1);
-    PORTD &= ~(1 << 5);
+    PORTD &= ~(1 << PORTD5);
     _delay_ms(2);
 
     byte <<= 4;
 
     write_nibble(byte);
     
-    PORTD |= (1 << 5);
+    PORTD |= (1 << PORTD5);
     _delay_us(1);
-    PORTD &= ~(1 << 5);
+    PORTD &= ~(1 << PORTD5);
     _delay_ms(2);
 }
 
@@ -84,15 +84,15 @@ void init_lcd()
      */
     DDRB = 0x00;
     DDRD = 0x00;
-    DDRC &= ~(1 << 6);
-    PORTC &= ~(1 << 6);
+    DDRD &= ~(1 << DDD6);
+    PORTD &= ~(1 << PORTD6);
 
     _delay_ms(1000);
   
     DDRB = 0xFF;
     DDRD = 0xFF;
-    DDRD |= (1 << 6);
-    PORTD |= (1 << 6);
+    DDRD |= (1 << DDD6);
+    PORTD |= (1 << PORTD6);
 
     _delay_ms(1000);
     
