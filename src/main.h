@@ -1,19 +1,18 @@
+#define F_CPU 16000000 /* Speed of MCU in Hz. */
+
 #include <avr/io.h>
 #include <string.h>
-
-#define F_CPU 16000000 // Speed of MCU in Hz
 #include <util/delay.h>
 
-// LCD
-void LCD_WRT(uint8_t BYTE);
-void LCD_STR(uint8_t* STR);
-void LCD_DAT(uint8_t BYTE);
-void LCD_CMD(uint8_t BYTE);
+void forward_bit_address(uint8_t *byte);
+void send_data_lcd(uint8_t byte);
+void send_command_lcd(uint8_t byte);
 
-void LCD_INIT();
+void sample_f1031v();
 
-// I2C
-void I2C_INIT();
+void init_lcd();
 
-// ADC
-void ADC_INIT();
+void init_i2c();
+
+void poll_adc();
+void init_adc();

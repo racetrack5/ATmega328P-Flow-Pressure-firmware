@@ -1,19 +1,23 @@
 #include "main.h"
 
-void main()
+int main(void)
 {
-    LCD_INIT();
+    init_lcd();
 
-    ADC_INIT();
+    init_adc();
     
     while(1)
     {
-            F1031V();
+        /* Check each sensor and re-evalute
+         * analog inputs if required. */
+        poll_adc();
 
-            if (ADCSRA &= ~(1 << 6))
-                ADCSRA |= (1 << 6);
+        if (ADCSRA &= ~(1 << 6))
+            ADCSRA |= (1 << 6);
                 
-            // Slow loop (optional)
-            _delay_ms(100);
+        /* Optional delay */
+        _delay_ms(100);
     }
+
+    return 0;
 }

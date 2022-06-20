@@ -1,43 +1,35 @@
 #include "main.h"
 
-// F1031V Mass Air Flow Sensor
+/* Slope and intercepts for linear equation. */
 #define F1031V_SLOPE 36.463 
 #define F1031V_INTERCEPT 18.036
 
-void F1031V()
+static void report_flow(uint16_t x, uint16_t y)
 {
-    // Poll ADC
-    if (ADCSRA &= ~(1 << 6))
-    {
-        uint16_t F1031V_x;
-        uint16_t F1031V_y;
-        uint8_t* BUFPTR;
-        char BUFFER[16];
+    /* Clear LCD and pass pointer. */
+    char buffer[16];
+    int8_t *ptr = &buffer;
+
+    send_command_lcd(0x01);
+
+    itoa(y, buffer, 10);
+    forward_bit_address(ptr);
+
+    memcpy(buffer, " L/min (STP)", 16);
+    forward_bit_address(ptr);
+}
+
+void sample_f1031v()
+{
+    /* Retrieve data from ADC, convert to a voltage, and
+     * solve for y. Send the data to the LCD.
+     */
+    uint16_t F1031V_x;
+    uint16_t F1031V_y;
         
-        BUFPTR = &BUFFER;
-        
-        F1031V_x = ADC; // 10-bit value
+    F1031V_x = ADC;
+    F1031V_x = F1031V_x / 1023 * 5;
+    F1031V_y = (F1031V_SLOPE*F1031V_x)-F1031V_INTERCEPT; 
 
-        // Convert to V and solve for y
-        F1031V_x = F1031V_x / 1023 * 5;
-        F1031V_y = (F1031V_SLOPE*F1031V_x)-F1031V_INTERCEPT; 
-
-        // Clear LCD
-        LCD_CMD(0x01);
-
-        // Report flow and Vin to ADC via LCD
-        itoa(F1031V_y, BUFFER, 10); // y
-        LCD_STR(BUFPTR);
-
-        memcpy(BUFFER, " L/min (STP)", 16);
-        LCD_STR(BUFPTR);
-
-        LCD_CMD(0xC0); // Next line
-
-        itoa(F1031V_x, BUFFER, 10); // x
-        LCD_STR(BUFPTR);
-
-        memcpy(BUFFER, "V (A0)", 16);
-        LCD_STR(BUFPTR);
-    }
+    report_flow(F1031V_x, F1031V_y);
 }
