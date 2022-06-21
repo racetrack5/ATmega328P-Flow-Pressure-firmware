@@ -43,7 +43,7 @@ void send_data_lcd(uint8_t byte)
     PORTD |= (1 << PORTD5);
     _delay_us(1);
     PORTD &= ~(1 << PORTD5);
-    _delay_us(200);
+    _delay_us(500);
 
     /* Shift LSBs rightward (send second lot of 4 bits). */
     byte <<= 4;
@@ -53,7 +53,7 @@ void send_data_lcd(uint8_t byte)
     PORTD |= (1 << PORTD5);
     _delay_us(1);
     PORTD &= ~(1 << PORTD5);
-    _delay_us(200);
+    _delay_us(500);
 }
 
 void send_command_lcd(uint8_t byte)
@@ -94,7 +94,7 @@ void init_lcd()
     DDRD |= (1 << DDD6);
     PORTD |= (1 << PORTD6);
 
-    _delay_ms(1000);
+    _delay_ms(2000);
     
     /* Enable 4-bit mode with 2-lines. */
     send_command_lcd(0x02);

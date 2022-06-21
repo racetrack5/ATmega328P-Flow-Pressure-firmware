@@ -15,11 +15,12 @@ void sample_f1031v();
 
 void init_lcd();
 
-uint8_t send_data_i2c(uint8_t *byte);
-uint8_t send_slaveaddr_i2c();
-uint8_t send_start_i2c();
-uint8_t reply_i2c(uint8_t xmit);
-void init_i2c();
-
 void poll_adc();
 void init_adc();
+
+uint8_t receive_data_i2c(uint8_t xmit);
+uint8_t send_slaveaddr_i2c(uint8_t mode);
+uint8_t send_start_i2c();
+uint8_t reply_i2c(uint8_t xmit);
+void wait_i2c();
+void init_i2c();

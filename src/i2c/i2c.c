@@ -3,31 +3,51 @@
 /* Documented I2C slave address of MPX5700. */
 #define SLAVE_ADDRESS 0x16
 
-/* Reply codes. */
+/* Relevant transmit and receiver codes. */
 #define XMIT_START 0x08
-#define XMIT_ADDRESS_ACK 0x18
-#define XMIT_DATA_ACK 0x28
+#define XMIT_ADDR_W_ACK 0x18
+#define XMIT_DATA_W_ACK 0x28
+#define XMIT_ADDR_R_ACK 0x40
+#define XMIT_DATA_R_ACK 0x50
+
+void send_stop_i2c()
+{
+    TWCR |= (1 << TWINT)|(1 << TWSTO)|(1 << TWEN);
+}
+
+uint8_t receive_data_i2c(uint8_t xmit)
+{
+    /* Send ACK, or NACK if all bytes recieved. */
+    wait_i2c();
+
+    if (xmit)
+        TWCR |= (1 << TWINT)|(1 << TWEA)|(1 << TWEN);
+    else
+        TWCR |= (1 << TWINT)|(1 << TWEN);
+
+    return TWDR;
+}
 
 uint8_t send_data_i2c(uint8_t *byte)
 {
     /* Pass data to slave device. */
-    TWCR |= (1 << TWINT)|(1 << TWEN);
     TWDR = *byte;
+    TWCR |= (1 << TWINT)|(1 << TWEN);
 
     wait_i2c();
 
-    return reply_i2c(XMIT_DATA_ACK);
+    return reply_i2c(XMIT_DATA_W_ACK);
 }
 
-uint8_t send_slaveaddr_i2c()
+uint8_t send_slaveaddr_i2c(uint8_t mode)
 {
-    /* Send slave address to slave device. */
+    /* Send slave address to slave device. Master 1=write, 0=read. */
+    TWDR = SLAVE_ADDRESS+mode;
     TWCR |= (1 << TWINT)|(1 << TWEN);
-    TWDR = SLAVE_ADDRESS;
 
     wait_i2c();
 
-    return reply_i2c(XMIT_ADDRESS_ACK);
+    return reply_i2c(XMIT_ADDR_W_ACK);
 }
 
 uint8_t send_start_i2c()
