@@ -1,12 +1,5 @@
 #include "main.h"
 
-void poll_adc()
-{
-    /* Polling rather than IQRs for now. */
-    if (ADCSRA &= ~(1 << ADSC))
-        sample_f1031v();
-}
-
 void init_adc()
 {
     /* Set pin modes and init ADC. Reference voltage is AVCC (5V), 
