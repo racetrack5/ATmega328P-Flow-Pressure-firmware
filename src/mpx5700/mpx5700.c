@@ -4,12 +4,10 @@
 #define MPX5700_M 0.0012858 
 #define MPX5700_INTERCEPT 0.04
 
-static volatile int8_t MPX5700_x;
+static volatile int8_t MPX5700_x; /* ISR to update this. */
 
 ISR(TWI_vect)
 {
-    uint8_t MPX5700_y;
-
     /* Receive bytes from MPX5700 over I2C bus. */
     MPX5700_x = receive_data_i2c();
 }
