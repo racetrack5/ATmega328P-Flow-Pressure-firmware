@@ -43,17 +43,17 @@ void send_data_lcd(uint8_t byte)
     PORTD |= (1 << PORTD5);
     _delay_us(1);
     PORTD &= ~(1 << PORTD5);
-    _delay_us(500);
+    _delay_us(200);
 
-    /* Shift LSBs rightward (send second lot of 4 bits). */
+    /* Shift LSBs leftward (send second lot of 4 bits). */
     byte <<= 4;
 
     write_nibble(byte);
-    
+
     PORTD |= (1 << PORTD5);
     _delay_us(1);
     PORTD &= ~(1 << PORTD5);
-    _delay_us(500);
+    _delay_us(200);
 }
 
 void send_command_lcd(uint8_t byte)

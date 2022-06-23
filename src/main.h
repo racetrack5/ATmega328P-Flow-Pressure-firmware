@@ -1,7 +1,5 @@
 /* Speed of MCU in Hz. */
-#ifndef F_CPU
 #define F_CPU 16000000
-#endif
 
 #include <avr/io.h>
 #include <string.h>
@@ -9,6 +7,8 @@
 
 uint16_t sample_f1031v();
 uint8_t sample_mpx5700();
+
+void report_data();
 
 void init_lcd();
 

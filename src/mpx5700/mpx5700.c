@@ -8,7 +8,7 @@ static volatile int8_t MPX5700_x; /* ISR to update this. */
 
 ISR(TWI_vect)
 {
-    /* Receive bytes from MPX5700 over I2C bus. */
+    /* Receive byte of data sent over I2C bus. */
     MPX5700_x = receive_data_i2c();
 }
 

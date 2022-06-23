@@ -13,14 +13,14 @@ uint8_t receive_data_i2c()
 
 void send_slaveaddr_i2c()
 {
-    /* Send slave address to slave device. Master 1=write, 0=read. */
+    /* Send slave address to slave device. */
     TWDR = SLAVE_ADDRESS;
     TWCR |= (1 << TWINT)|(1 << TWEN);
 }
 
 void send_start_i2c()
 {
-    /* Send Start and return byte stored within TWSR. */
+    /* Send Start signal to slave device. */
     TWCR |= (1 << TWINT)|(1 << TWSTA)|(1 << TWEN);
 }
 
@@ -30,4 +30,5 @@ void init_i2c()
      * no pre-scalar). CPU_clock/(16 + 2*TWBR*(4^prescaler)) */
     TWBR = 0x20;
     TWCR |= (1 << TWEN);
+    TWCR |= (1 << TWIE);
 }
