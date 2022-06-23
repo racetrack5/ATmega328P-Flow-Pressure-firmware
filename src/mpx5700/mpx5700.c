@@ -1,3 +1,4 @@
+#include <avr/interrupt.h>
 #include "main.h"
 
 /* Slope and intercepts for linear equation. */
