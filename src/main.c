@@ -1,4 +1,3 @@
-#include <avr/interrupt.h>
 #include "main.h"
 
 int main()

@@ -84,14 +84,12 @@ void init_lcd()
      */
     DDRB = 0x00;
     DDRD = 0x00;
-    DDRD &= ~(1 << DDD6);
     PORTD &= ~(1 << PORTD6);
 
     _delay_ms(1000);
   
     DDRB = 0xFF;
     DDRD = 0xFF;
-    DDRD |= (1 << DDD6);
     PORTD |= (1 << PORTD6);
 
     _delay_ms(2000);

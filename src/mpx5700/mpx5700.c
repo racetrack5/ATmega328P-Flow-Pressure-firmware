@@ -1,9 +1,9 @@
-#include <avr/interrupt.h>
 #include "main.h"
 
 /* Slope and intercepts for linear equation. */
 #define MPX5700_M 0.0012858 
 #define MPX5700_INTERCEPT 0.04
+#define CONVERSION 10.1972
 
 static volatile int8_t MPX5700_x; /* ISR to update this. */
 
@@ -20,6 +20,9 @@ uint8_t sample_mpx5700()
 
     MPX5700_x = MPX5700_x / 255 * 5;
     MPX5700_y = (MPX5700_M*MPX5700_x)+MPX5700_INTERCEPT; 
+
+    /* Convert to cmH2O. */
+    MPX5700_y *= CONVERSION;
 
     return MPX5700_y;
 }
