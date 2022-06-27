@@ -1,6 +1,6 @@
 #include "main.h"
 
-void main(void)
+int main(void)
 {
     /* Initialise LCD, ADC, and I2C bus. */
     init_lcd();
