@@ -2,7 +2,7 @@
 
 static void write_nibble(uint8_t byte)
 {
-    /* Test most significant 4-bits and set pins */
+    /* Test most significant 4-bits and set pins. */
     if(byte & 0x10)
         LCD_DATA_PORT |=  (1 << LCD_DATA_PIN1);
     else
@@ -36,7 +36,7 @@ void forward_bit_address(uint8_t *byte)
 
 void send_data_lcd(uint8_t byte)
 {
-    /* Send data (not commands) to the LCD (4-bit mode). */
+    /* Send data to LCD. */
     write_nibble(byte);
     
     LCD_CONTROL_PORT |=  (1 << LCD_RS_PIN)|(1 << LCD_EN_PIN);
@@ -44,7 +44,7 @@ void send_data_lcd(uint8_t byte)
     LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
     _delay_us(2);
 
-    /* Shift LSBs leftward (send second lot of 4 bits). */
+    /* Shift LSBs leftward. */
     byte <<= 4;
 
     write_nibble(byte);
@@ -57,7 +57,7 @@ void send_data_lcd(uint8_t byte)
 
 void send_command_lcd(uint8_t byte)
 {
-    /* Send command to LCD. Looser timings for reliability. */
+    /* Send command to LCD. */
     write_nibble(byte);
 
     LCD_CONTROL_PORT &= ~(1 << LCD_RS_PIN);
