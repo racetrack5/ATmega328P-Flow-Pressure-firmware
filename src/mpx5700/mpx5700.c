@@ -10,12 +10,9 @@ static volatile int8_t MPX5700_x; /* ISR to update this. */
 ISR(TWI_vect)
 {
     /* Receive byte of data sent over I2C bus. */
-    TWCR |= (1 << TWINT)|(1 << TWEA)|(1 << TWEN);
-    while (!(TWCR & (1<<TWINT))) ;
-
     MPX5700_x = TWDR;
 
-    TWCR |= (1 << TWINT);
+    TWCR |= (1 << TWINT)|(1 << TWEA)|(1 << TWEN);
 }
 
 uint8_t sample_mpx5700()
