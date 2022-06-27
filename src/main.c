@@ -9,7 +9,9 @@ int main()
     
     init_i2c();
     send_start_i2c();
-    send_slaveaddr_i2c(0);
+    send_slaveaddr_i2c();
+
+    sei();
 
     for( ; ;)
     {
