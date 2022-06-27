@@ -2,7 +2,7 @@
 #define F_CPU 16000000
 
 #include <avr/io.h>
-#include <avr/interrupt.h>>
+#include <avr/interrupt.h>
 #include <string.h>
 #include <util/delay.h>
 
@@ -11,7 +11,6 @@ uint8_t sample_mpx5700();
 
 void report_data();
 
-uint8_t receive_data_i2c();
 void send_slaveaddr_i2c();
 void send_start_i2c();
 void init_i2c();
