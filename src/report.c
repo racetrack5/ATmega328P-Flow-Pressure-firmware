@@ -4,16 +4,16 @@ void report_data()
 {
     /* Grab up-to-date sensor data and send to LCD. */
     int16_t f1031v;
-    int8_t mpx5700;
-    
+    int16_t mpx5700;
     char buffer[16];
     int8_t *ptr = &buffer;
 
-    f1031v = sample_f1031v();
+    f1031v  = sample_f1031v();
     mpx5700 = sample_mpx5700();
 
-    /* Clear LCD before reporting new data. */
-    send_command_lcd(0x01);
+    /* Cursor return. */
+    send_command_lcd(0x80);
+    _delay_ms(2);
 
     /* Report flows from F1031V sensor. */
     itoa(f1031v, buffer, 10);

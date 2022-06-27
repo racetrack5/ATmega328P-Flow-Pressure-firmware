@@ -28,4 +28,3 @@ void init_i2c()
 
     while (!(TWCR & (1 << TWINT))) ;
 }
-}

@@ -4,24 +4,24 @@ static void write_nibble(uint8_t byte)
 {
     /* Test most significant 4-bits and set pins */
     if(byte & 0x10)
-        PORTB |= (1 << PORTB0);
+        LCD_DATA_PORT |=  (1 << LCD_DATA_PIN1);
     else
-        PORTB &= ~(1 << PORTB0);
+        LCD_DATA_PORT &= ~(1 << LCD_DATA_PIN1);
 
     if(byte & 0x20)
-        PORTB |= (1 << PORTB1);
+        LCD_DATA_PORT |=  (1 << LCD_DATA_PIN2);
     else
-        PORTB &= ~(1 << PORTB1);
+        LCD_DATA_PORT &= ~(1 << LCD_DATA_PIN2);
 
     if(byte & 0x40)
-        PORTB |= (1 << PORTB2);
+        LCD_DATA_PORT |=  (1 << LCD_DATA_PIN3);
     else
-        PORTB &= ~(1 << PORTB2);
+        LCD_DATA_PORT &= ~(1 << LCD_DATA_PIN3);
 
     if(byte & 0x80)
-        PORTB |= (1 << PORTB3);
+        LCD_DATA_PORT |=  (1 << LCD_DATA_PIN4);
     else
-        PORTB &= ~(1 << PORTB3);
+        LCD_DATA_PORT &= ~(1 << LCD_DATA_PIN4);
 }
 
 void forward_bit_address(uint8_t *byte)
@@ -39,21 +39,20 @@ void send_data_lcd(uint8_t byte)
     /* Send data (not commands) to the LCD (4-bit mode). */
     write_nibble(byte);
     
-    PORTD |= (1 << PORTD3);
-    PORTD |= (1 << PORTD5);
+    LCD_CONTROL_PORT |=  (1 << LCD_RS_PIN)|(1 << LCD_EN_PIN);
     _delay_us(1);
-    PORTD &= ~(1 << PORTD5);
-    _delay_us(200);
+    LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
+    _delay_us(2);
 
     /* Shift LSBs leftward (send second lot of 4 bits). */
     byte <<= 4;
 
     write_nibble(byte);
 
-    PORTD |= (1 << PORTD5);
+    LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);
     _delay_us(1);
-    PORTD &= ~(1 << PORTD5);
-    _delay_us(200);
+    LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
+    _delay_us(5);
 }
 
 void send_command_lcd(uint8_t byte)
@@ -61,20 +60,20 @@ void send_command_lcd(uint8_t byte)
     /* Send command to LCD. Looser timings for reliability. */
     write_nibble(byte);
 
-    PORTD &= ~(1 << PORTD3);
-    PORTD|=(1 << PORTD5);  
+    LCD_CONTROL_PORT &= ~(1 << LCD_RS_PIN);
+    LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);  
     _delay_us(1);
-    PORTD &= ~(1 << PORTD5);
-    _delay_ms(2);
+    LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
+    _delay_us(2);
 
     byte <<= 4;
 
     write_nibble(byte);
     
-    PORTD |= (1 << PORTD5);
+    LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);
     _delay_us(1);
-    PORTD &= ~(1 << PORTD5);
-    _delay_ms(2);
+    LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
+    _delay_us(5);
 }
 
 void init_lcd()
@@ -82,17 +81,15 @@ void init_lcd()
     /* Cycle both power and data pins with generous
      * delays to ensure reliability.
      */
-    DDRB = 0x00;
-    DDRD = 0x00;
-    PORTD &= ~(1 << PORTD6);
+    DDRB, DDRD = 0x00;
+    LCD_POWER_PORT &=  ~(1 << LCD_POWER_PIN);
 
-    _delay_ms(1000);
+    _delay_ms(250);
   
-    DDRB = 0xFF;
-    DDRD = 0xFF;
-    PORTD |= (1 << PORTD6);
+    DDRB, DDRD = 0xFF;
+    LCD_CONTROL_PORT |= (1 << LCD_POWER_PIN);
 
-    _delay_ms(2000);
+    _delay_ms(250);
     
     /* Enable 4-bit mode with 2-lines. */
     send_command_lcd(0x02);

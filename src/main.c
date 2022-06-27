@@ -11,15 +11,10 @@ int main()
     send_start_i2c();
     send_slaveaddr_i2c(0);
 
-    /* Enable interrupts. */
-    sei();
-
-    while(1)
+    for( ; ;)
     {
         report_data();
-
-        /* Delay to avoid LCD corruption. */
-        _delay_ms(20);
+        _delay_ms(50);
     }
 
     return 0;

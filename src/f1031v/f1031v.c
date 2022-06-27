@@ -11,6 +11,7 @@ ISR(ADC_vect)
     /* Interrupt when ADC conversion is complete. */
     F1031V_x = ADC;
 
+    /* Start conversion again. */
     ADCSRA |= (1 << ADSC);
 }
 

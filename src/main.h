@@ -1,13 +1,28 @@
 /* Speed of MCU in Hz. */
+#ifndef F_CPU
 #define F_CPU 16000000
+#endif
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 #include <string.h>
 #include <util/delay.h>
 
+/* Physical connections to LCD. */
+#define LCD_POWER_PORT      PORTD
+#define LCD_POWER_PIN       PORTD6
+#define LCD_CONTROL_PORT    PORTD
+#define LCD_RS_PIN          PORTD3
+#define LCD_EN_PIN          PORTD5
+#define LCD_DATA_PORT       PORTB
+#define LCD_DATA_PIN1       PORTB0
+#define LCD_DATA_PIN2       PORTB1
+#define LCD_DATA_PIN3       PORTB2
+#define LCD_DATA_PIN4       PORTB3
+
 uint16_t sample_f1031v();
-uint8_t sample_mpx5700();
+uint16_t sample_mpx5700();
 
 void report_data();
 
