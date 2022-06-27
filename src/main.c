@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main()
+void main(void)
 {
     /* Initialise LCD, ADC, and I2C bus. */
     init_lcd();
@@ -18,6 +18,4 @@ int main()
         report_data();
         _delay_ms(50);
     }
-
-    return 0;
 }
