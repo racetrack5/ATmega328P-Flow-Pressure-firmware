@@ -1,11 +1,14 @@
 #include "main.h"
 
+#define FLOW "L/min (STP)"
+#define PRESSURE "cmH2O"
+
 static void report_data_usart(uint16_t f1031v, uint16_t mpx5700)
 {
     char buffer[16];
     int8_t *ptr = &buffer;
 
-    memcpy(buffer, (char)f1031v + " L/min (STP)", 16);
+    memcpy(buffer, (char)f1031v + FLOW, 16);
     while(*ptr > 0)
     {
         xmit_usart(*ptr);
@@ -13,7 +16,7 @@ static void report_data_usart(uint16_t f1031v, uint16_t mpx5700)
         ptr++; /* Next byte to send. */
     }
 
-    memcpy(buffer, (char)mpx5700 + " cmH2O", 16);
+    memcpy(buffer, (char)mpx5700 + PRESSURE, 16);
     while(*ptr > 0)
     {
         xmit_usart(*ptr);
@@ -32,14 +35,15 @@ static void report_data_lcd(uint16_t f1031v, uint16_t mpx5700)
     _delay_ms(2);
 
     /* Report flows from F1031V sensor. */
-    memcpy(buffer, (char)f1031v + " L/min (STP)", 16);
+    memcpy(buffer, (char)f1031v + FLOW, 16);
     forward_bit_address(ptr);
 
     /* Next line. */
     send_command_lcd(0xC0);
+    _delay_ms(1);
 
     /* Report pressures from MPX5700 sensor. */
-    memcpy(buffer, (char)mpx5700 + " cmH2O", 16);
+    memcpy(buffer, (char)mpx5700 + PRESSURE, 16);
     forward_bit_address(ptr);
 }
 

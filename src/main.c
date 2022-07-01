@@ -17,6 +17,9 @@ int main(void)
     {
         report_data();
 
+        //if (isrchk_usart())
+        //    return_usart();
+
         _delay_ms(50);
     }
 }
