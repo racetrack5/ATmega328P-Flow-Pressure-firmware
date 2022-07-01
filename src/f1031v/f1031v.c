@@ -15,7 +15,7 @@ ISR(ADC_vect)
     ADCSRA |= (1 << ADSC);
 }
 
-uint16_t sample_f1031v()
+uint16_t sample_f1031v(void)
 {
     /* Convert ADC output to a voltage and solve for y. */
     uint16_t F1031V_y;

@@ -15,10 +15,10 @@ ISR(TWI_vect)
     TWCR |= (1 << TWINT)|(1 << TWEA)|(1 << TWEN);
 }
 
-uint16_t sample_mpx5700()
+uint16_t sample_mpx5700(void)
 {
     /* Convert data to a voltage and solve for y. */
-    uint8_t MPX5700_y;
+    uint16_t MPX5700_y;
 
     MPX5700_x = MPX5700_x / 1023 * 5;
     MPX5700_y = (MPX5700_M*MPX5700_x)+MPX5700_INTERCEPT; 

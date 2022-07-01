@@ -5,7 +5,6 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/sleep.h>
 #include <string.h>
 #include <util/delay.h>
 
@@ -21,18 +20,23 @@
 #define LCD_DATA_PIN3       PORTB2
 #define LCD_DATA_PIN4       PORTB3
 
-uint16_t sample_f1031v();
-uint16_t sample_mpx5700();
+uint16_t sample_f1031v(void);
+uint16_t sample_mpx5700(void);
 
-void report_data();
+void report_data(void);
 
-void send_slaveaddr_i2c();
-void send_start_i2c();
-void init_i2c();
+void send_slaveaddr_i2c(void);
+void send_start_i2c(void);
+void init_i2c(void);
 
-void init_adc();
+void init_adc(void);
+
+uint8_t isrchk_usart(void);
+uint8_t return_usart(void);
+void xmit_usart(uint8_t byte);
+void init_usart(uint16_t baud_rate);
 
 void forward_bit_address(uint8_t *byte);
 void send_data_lcd(uint8_t byte);
 void send_command_lcd(uint8_t byte);
-void init_lcd();
+void init_lcd(void);

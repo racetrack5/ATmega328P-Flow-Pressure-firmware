@@ -2,8 +2,8 @@
 
 int main(void)
 {
-    /* Initialise LCD, ADC, and I2C bus. */
     init_lcd();
+    init_usart(9600);
 
     init_adc();
     
@@ -13,9 +13,10 @@ int main(void)
 
     sei();
 
-    for( ; ;)
+    for ( ; ;)
     {
         report_data();
+
         _delay_ms(50);
     }
 }

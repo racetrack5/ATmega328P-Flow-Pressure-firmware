@@ -44,7 +44,6 @@ void send_data_lcd(uint8_t byte)
     LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
     _delay_us(2);
 
-    /* Shift LSBs leftward. */
     byte <<= 4;
 
     write_nibble(byte);
@@ -76,7 +75,7 @@ void send_command_lcd(uint8_t byte)
     _delay_us(5);
 }
 
-void init_lcd()
+void init_lcd(void)
 {
     /* Cycle both power and data pins with generous
      * delays to ensure reliability.
@@ -84,12 +83,12 @@ void init_lcd()
     DDRB, DDRD = 0x00;
     LCD_POWER_PORT &=  ~(1 << LCD_POWER_PIN);
 
-    _delay_ms(250);
+    _delay_ms(500);
   
     DDRB, DDRD = 0xFF;
     LCD_CONTROL_PORT |= (1 << LCD_POWER_PIN);
 
-    _delay_ms(250);
+    _delay_ms(500);
     
     /* Enable 4-bit mode with 2-lines. */
     send_command_lcd(0x02);

@@ -3,6 +3,7 @@
         "main.h": "c",
         "io.h": "c",
         "delay.h": "c",
-        "interrupt.h": "c"
+        "interrupt.h": "c",
+        "string.h": "c"
     }
 }
