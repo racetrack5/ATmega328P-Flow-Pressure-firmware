@@ -13,13 +13,17 @@ int main(void)
 
     sei();
 
+    uint8_t input;
+
     for ( ; ;)
     {
-        report_data();
+        if (return_overflows() == 6)
+        {
+            report_data();
+            zero_overflows();
+        }
 
-        //if (isrchk_usart())
-        //    return_usart();
-
-        _delay_ms(50);
+        if (isrchk_usart())
+            input = return_usart;
     }
 }

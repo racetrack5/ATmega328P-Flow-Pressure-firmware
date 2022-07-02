@@ -25,6 +25,10 @@ uint16_t sample_mpx5700(void);
 
 void report_data(void);
 
+uint8_t return_overflows(void);
+void zero_overflows(void);
+void init_timer(void);
+
 void send_slaveaddr_i2c(void);
 void send_start_i2c(void);
 void init_i2c(void);
