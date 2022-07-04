@@ -21,16 +21,20 @@ uint8_t return_usart(void)
     return usart_byte;
 }
 
-void xmit_usart(uint8_t byte)
+void xmit_usart(int8_t *ptr)
 {
-    /* Tx one byte of data. */
-    UDR0 = byte;
+    while(*ptr > 0)
+    {
+        UDR0 = *ptr;
+        while(!(UCSR0A & (1 << UDRE0))) ; /* Wait for previous byte. */
+        ptr++; /* Next byte to send. */
+    }
 }
 
 void init_usart(uint16_t baud_rate)
 {
     /* Enable Tx and Rx. */
-    uint16_t baud_prescale = F_CPU/(baud_rate*16)-1;
+    uint16_t baud_prescale = (F_CPU/16/baud_rate)-1;
     UBRR0L = (uint8_t)(baud_prescale & 0xFF);
     UBRR0H = (uint8_t)(baud_prescale >> 8);
 

@@ -11,11 +11,13 @@ int main(void)
     send_start_i2c();
     send_slaveaddr_i2c();
 
+    init_timer();
+
     sei();
 
     uint8_t input;
 
-    for ( ; ;)
+    while(1)
     {
         if (return_overflows() == 6)
         {

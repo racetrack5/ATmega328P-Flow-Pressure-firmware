@@ -37,7 +37,7 @@ void init_adc(void);
 
 uint8_t isrchk_usart(void);
 uint8_t return_usart(void);
-void xmit_usart(uint8_t byte);
+void xmit_usart(int8_t *ptr);
 void init_usart(uint16_t baud_rate);
 
 void forward_bit_address(uint8_t *byte);

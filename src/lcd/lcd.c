@@ -51,7 +51,7 @@ void send_data_lcd(uint8_t byte)
     LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);
     _delay_us(1);
     LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
-    _delay_us(5);
+    _delay_us(50);
 }
 
 void send_command_lcd(uint8_t byte)
@@ -63,7 +63,7 @@ void send_command_lcd(uint8_t byte)
     LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);  
     _delay_us(1);
     LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
-    _delay_us(2);
+    _delay_ms(1);
 
     byte <<= 4;
 
@@ -72,7 +72,7 @@ void send_command_lcd(uint8_t byte)
     LCD_CONTROL_PORT |=  (1 << LCD_EN_PIN);
     _delay_us(1);
     LCD_CONTROL_PORT &= ~(1 << LCD_EN_PIN);
-    _delay_us(5);
+    _delay_ms(2);
 }
 
 void init_lcd(void)
@@ -80,18 +80,21 @@ void init_lcd(void)
     /* Cycle both power and data pins with generous
      * delays to ensure reliability.
      */
-    DDRB, DDRD = 0x00;
+    DDRB = 0x00;
+    DDRD = 0x00;
     LCD_POWER_PORT &=  ~(1 << LCD_POWER_PIN);
 
-    _delay_ms(500);
+    _delay_ms(1000);
   
-    DDRB, DDRD = 0xFF;
-    LCD_CONTROL_PORT |= (1 << LCD_POWER_PIN);
+    DDRB = 0xFF;
+    DDRD = 0xFF;
+    LCD_POWER_PORT |= (1 << LCD_POWER_PIN);
 
-    _delay_ms(500);
+    _delay_ms(1000);
     
     /* Enable 4-bit mode with 2-lines. */
     send_command_lcd(0x02);
     send_command_lcd(0x28);
     send_command_lcd(0x0C);
+    send_command_lcd(0x01);
 }

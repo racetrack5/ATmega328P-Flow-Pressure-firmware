@@ -1,50 +1,50 @@
 #include "main.h"
 
-#define FLOW "L/min (STP)"
-#define PRESSURE "cmH2O"
+#define FLOW " L/min (STP)"
+#define FLOW_USART " L/min (STP), "
+#define PRESSURE " cmH2O"
+#define PRESSURE_USART " cmH2O\n"
 
 static void report_data_usart(uint16_t f1031v, uint16_t mpx5700)
 {
     char buffer[16];
-    int8_t *ptr = &buffer;
 
-    memcpy(buffer, (char)f1031v + FLOW, 16);
-    while(*ptr > 0)
-    {
-        xmit_usart(*ptr);
-        while(!(UCSR0A & (1 << UDRE0))) ; /* Wait for previous byte. */
-        ptr++; /* Next byte to send. */
-    }
+    itoa(f1031v, buffer, 10);
+    xmit_usart(&buffer);
 
-    memcpy(buffer, (char)mpx5700 + PRESSURE, 16);
-    while(*ptr > 0)
-    {
-        xmit_usart(*ptr);
-        while(!(UCSR0A & (1 << UDRE0))) ;
-        ptr++;
-    }
+    memcpy(buffer, FLOW_USART, 16);
+    xmit_usart(&buffer);
+
+    itoa(mpx5700, buffer, 10);
+    xmit_usart(&buffer);
+
+    memcpy(buffer, PRESSURE_USART, 16);
+    xmit_usart(&buffer);
 }
 
 static void report_data_lcd(uint16_t f1031v, uint16_t mpx5700)
 {
     char buffer[16];
-    int8_t *ptr = &buffer;
 
-    /* Cursor return. */
-    send_command_lcd(0x80);
-    _delay_ms(2);
+    /* Blank LCD. */
+    send_command_lcd(0x01);
 
     /* Report flows from F1031V sensor. */
-    memcpy(buffer, (char)f1031v + FLOW, 16);
-    forward_bit_address(ptr);
+    itoa(f1031v, buffer, 10);
+    forward_bit_address(&buffer);
+
+    memcpy(buffer, FLOW, 16);
+    forward_bit_address(&buffer);
 
     /* Next line. */
     send_command_lcd(0xC0);
-    _delay_ms(1);
 
     /* Report pressures from MPX5700 sensor. */
-    memcpy(buffer, (char)mpx5700 + PRESSURE, 16);
-    forward_bit_address(ptr);
+    itoa(mpx5700, buffer, 10);
+    forward_bit_address(&buffer);
+
+    memcpy(buffer, PRESSURE, 16);
+    forward_bit_address(&buffer);
 }
 
 void report_data(void)

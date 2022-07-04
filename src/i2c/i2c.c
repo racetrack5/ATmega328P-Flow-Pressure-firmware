@@ -9,7 +9,7 @@ void send_slaveaddr_i2c(void)
     TWDR = SLAVE_ADDRESS;
     TWCR |= (1 << TWINT)|(1 << TWEN);
 
-    while (!(TWCR & (1 << TWINT))) ;
+    //while (!(TWCR & (1 << TWINT))) ;
 }
 
 void send_start_i2c(void)
@@ -17,7 +17,7 @@ void send_start_i2c(void)
     /* Send Start signal to slave device. */
     TWCR |= (1 << TWINT)|(1 << TWSTA)|(1 << TWEN);
 
-    while (!(TWCR & (1 << TWINT))) ;
+    //while (!(TWCR & (1 << TWINT))) ;
 }
 
 void init_i2c(void)
@@ -28,5 +28,5 @@ void init_i2c(void)
     TWSR = 0x00;
     TWCR |= (1 << TWEN)|(1 << TWIE);
 
-    while (!(TWCR & (1 << TWINT))) ;
+    //while (!(TWCR & (1 << TWINT))) ;
 }
