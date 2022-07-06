@@ -13,6 +13,7 @@ ISR(ADC_vect)
 
     /* Start conversion again. */
     ADCSRA |= (1 << ADSC);
+    increment_i2c_status();
 }
 
 uint16_t sample_f1031v(void)

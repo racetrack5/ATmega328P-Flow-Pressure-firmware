@@ -1,9 +1,9 @@
 #include "main.h"
 
 #define FLOW " L/min (STP)"
-#define FLOW_USART " L/min (STP), "
+#define FLOW_USART "\tL/min (STP)\t"
 #define PRESSURE " cmH2O"
-#define PRESSURE_USART " cmH2O\n"
+#define PRESSURE_USART "\tcmH2O\n"
 
 static void report_data_usart(uint16_t f1031v, uint16_t mpx5700)
 {

@@ -13,6 +13,8 @@ ISR(TWI_vect)
     MPX5700_x = TWDR;
 
     TWCR |= (1 << TWINT)|(1 << TWEA)|(1 << TWEN);
+
+    increment_i2c_status();
 }
 
 uint16_t sample_mpx5700(void)

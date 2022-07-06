@@ -4,13 +4,8 @@ int main(void)
 {
     init_lcd();
     init_usart(9600);
-
     init_adc();
-    
     init_i2c();
-    send_start_i2c();
-    send_slaveaddr_i2c();
-
     init_timer();
 
     sei();
@@ -23,6 +18,22 @@ int main(void)
         {
             report_data();
             zero_overflows();
+        }
+
+        switch(return_i2c_status())
+        {
+            case 0:
+                if (TWCR & (1 << TWINT))
+                    send_slaveaddr_i2c();
+                break;
+            case 1:
+                if (TWCR & (1 << TWINT))
+                    send_start_i2c();
+                break;
+            case 2:
+                if (TWCR & (1 << TWINT))
+                    send_slaveaddr_i2c();
+                break;
         }
 
         if (isrchk_usart())

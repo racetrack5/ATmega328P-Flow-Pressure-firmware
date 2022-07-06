@@ -29,6 +29,8 @@ uint8_t return_overflows(void);
 void zero_overflows(void);
 void init_timer(void);
 
+void increment_i2c_status(void);
+uint8_t return_i2c_status(void);
 void send_slaveaddr_i2c(void);
 void send_start_i2c(void);
 void init_i2c(void);
